@@ -18,8 +18,7 @@ class SearchBar extends Component {
   render(){
     return (
       <div className="search-books-bar">
-        {/*<Link className="close-search" to="/">Close</Link>*/}
-        <a className="close-search" onClick={this.handleBarClose}>Close</a>
+        <Link className="close-search" to="/">Close</Link>
         <div className="search-books-input-wrapper">
           <input type="text" placeholder="Search by title or author" onKeyUp={this.handleInputKeyUp}/>
         </div>
