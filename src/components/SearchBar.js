@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Route, Link} from 'react-router-dom';
 class SearchBar extends Component {
   constructor(props){
     super(props);
@@ -17,6 +18,7 @@ class SearchBar extends Component {
   render(){
     return (
       <div className="search-books-bar">
+        {/*<Link className="close-search" to="/">Close</Link>*/}
         <a className="close-search" onClick={this.handleBarClose}>Close</a>
         <div className="search-books-input-wrapper">
           <input type="text" placeholder="Search by title or author" onKeyUp={this.handleInputKeyUp}/>
