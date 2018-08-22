@@ -114,7 +114,7 @@ class BooksApp extends React.Component {
               <ol className="books-grid">
                 {
                   this.state.searchBook.length > 0 && this.state.searchBook.map((book) => (
-                    <Book book={book} disabled={false} key={book.id}
+                    <Book book={book} key={book.id}
                           onUpdateBook={this.handleSelectChange}/>
                   ))
                 }

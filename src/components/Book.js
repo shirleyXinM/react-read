@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 const shelfMap ={
   currentlyReading: 'currently_reading',
   wantToRead: 'want_to_read',
-  read: 'read'
+  read: 'read',
+  none: 'none'
 }
 class Book extends Component{
   handleSelectChange = (e,book) =>{
@@ -18,7 +19,7 @@ class Book extends Component{
             <div className="book-shelf-changer">
               <select onChange={(e) => this.handleSelectChange(e, this.props.book)} value={shelfMap[this.props.book.shelf]}>
                 <option value="move"
-                        disabled={this.props.disabled}>Move to...
+                        disabled>Move to...
                 </option>
                 <option value="currently_reading">Currently Reading</option>
                 <option value="want_to_read">Want to Read</option>
