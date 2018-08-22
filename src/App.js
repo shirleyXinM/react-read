@@ -51,10 +51,19 @@ class BooksApp extends React.Component {
       searchValue: val
     })
     console.log('search', val);
-    BooksAPI.search(val).then((data) => {
-      console.log('searchBook', data);
+    BooksAPI.search(val).then((books) => {
+      for(let index in books){
+        for(let myBook of this.state.books){
+          if(books[index].id === myBook.id){
+            console.log('match',myBook.shelf)
+            books[index].shelf = myBook.shelf;
+            break;
+          }
+          books[index].shelf = 'none';
+        }
+      }
       this.setState({
-        searchBook: data
+        searchBook: books
       })
     })
   }
@@ -71,6 +80,7 @@ class BooksApp extends React.Component {
 
   getAllBooks () {
     BooksAPI.getAll().then((books) => {
+      let Mybooks = books
       let currently_reading = books.filter((book) => {
         return book.shelf === shelfs.currentlyReading
       });
@@ -82,6 +92,7 @@ class BooksApp extends React.Component {
       });
 
       this.setState({
+        books: Mybooks,
         currently_reading,
         want_to_read,
         read
@@ -96,7 +107,7 @@ class BooksApp extends React.Component {
   render () {
     return (
       <div className="app">
-        <Route exact path="/search" render={() => (
+        <Route exact path="/search" key={'search'}render={() => (
           <div className="search-books">
             <SearchBar onBarClose={this.handleCloseSearchBar}
                        onSearchKeyUp={this.handleSearchKeyUp}/>
@@ -104,7 +115,7 @@ class BooksApp extends React.Component {
               <ol className="books-grid">
                 {
                   this.state.searchBook.length > 0 && this.state.searchBook.map((book) => (
-                    <Book book={book} disabled={false}
+                    <Book book={book} disabled={false} key={book.id}
                           onUpdateBook={this.handleSelectChange}/>
                   ))
                 }
@@ -112,29 +123,26 @@ class BooksApp extends React.Component {
             </div>
           </div>)
         } />
-        <Route exact path="/" render={()=>(
+        <Route exact path="/" key={'root'} render={()=>(
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
               <div>
-                {this.state.currently_reading.length > 0 ? (
-                  <MyBookShelf title={"Currently Reading"}
-                               books={this.state.currently_reading}
-                               onUpdateBook={this.handleUpdateBook}></MyBookShelf>
-                ) : (<EmptyShelf title={"Currently Reading"} msg={"没有正在阅读的书籍"}></EmptyShelf>)}
-                {this.state.want_to_read.length > 0 ? (
-                  <MyBookShelf title={"Want to Read"}
-                               books={this.state.want_to_read}
-                               onUpdateBook={this.handleUpdateBook}></MyBookShelf>
-                ) : (<EmptyShelf title={"Want to Read"} msg={"没有想要的书籍"}></EmptyShelf>)}
                 {
-                  this.state.read.length > 0 ? (
-                    <MyBookShelf title={"Read"}
-                                 books={this.state.read}
-                                 onUpdateBook={this.handleUpdateBook}></MyBookShelf>
-                  ) : (<EmptyShelf title={"Read"} msg={"没有已读的书籍"}></EmptyShelf>)
+                  Object.keys(shelfMap).map(item =>{
+                    return (
+                      this.state[item].length > 0 ? (
+                        <MyBookShelf key={item} title={shelfMap[item]}
+                                     books={this.state[item]}
+                                     onUpdateBook={this.handleUpdateBook}
+                        />
+                      ) : (
+                        <EmptyShelf key={item} title={shelfMap[item]} msg={"没有书籍"}/>
+                      )
+                    )
+                  })
                 }
               </div>
             </div>
