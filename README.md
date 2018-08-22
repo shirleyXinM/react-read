@@ -90,3 +90,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## 操作步骤
+
+* 点击向下的按钮来变更图书所属类别
+* 通过右下角的+号来添加书籍到任意类别
+* 可以通过回退按钮或者直接输入url来定位到图书列表和搜索页面
