@@ -53,7 +53,7 @@ class BooksApp extends React.Component {
     console.log('search', val);
     BooksAPI.search(val).then((books) => {
       for(let index in books){
-        for(let myBook of this.state.books){
+        for(let myBook of this.Mybooks){
           if(books[index].id === myBook.id){
             console.log('match',myBook.shelf)
             books[index].shelf = myBook.shelf;
@@ -80,7 +80,7 @@ class BooksApp extends React.Component {
 
   getAllBooks () {
     BooksAPI.getAll().then((books) => {
-      let Mybooks = books
+      this.Mybooks = books
       let currently_reading = books.filter((book) => {
         return book.shelf === shelfs.currentlyReading
       });
@@ -92,7 +92,6 @@ class BooksApp extends React.Component {
       });
 
       this.setState({
-        books: Mybooks,
         currently_reading,
         want_to_read,
         read
@@ -107,7 +106,7 @@ class BooksApp extends React.Component {
   render () {
     return (
       <div className="app">
-        <Route exact path="/search" key={'search'}render={() => (
+        <Route exact path="/search" render={() => (
           <div className="search-books">
             <SearchBar onBarClose={this.handleCloseSearchBar}
                        onSearchKeyUp={this.handleSearchKeyUp}/>
@@ -123,7 +122,7 @@ class BooksApp extends React.Component {
             </div>
           </div>)
         } />
-        <Route exact path="/" key={'root'} render={()=>(
+        <Route exact path="/" render={()=>(
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
