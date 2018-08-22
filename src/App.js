@@ -50,7 +50,20 @@ class BooksApp extends React.Component {
     this.setState({
       searchValue: val
     })
-    console.log('search', val);
+    this.searchBooks(val);
+  }
+
+  handleUpdateBook = (book, shelf) => {
+    console.log('update', book.id);
+    BooksAPI.update(book, shelfMap[shelf]).then((res) => {
+      this.getAllBooks();
+      this.searchBooks(this.state.searchValue);
+    })
+  }
+  handleSelectChange = (e,book) =>{
+    this.handleUpdateBook(book,e.target.value);
+  }
+  searchBooks(val){
     BooksAPI.search(val).then((books) => {
       for(let index in books){
         for(let myBook of this.Mybooks){
@@ -67,17 +80,6 @@ class BooksApp extends React.Component {
       })
     })
   }
-
-  handleUpdateBook = (book, shelf) => {
-    console.log('update', book.id);
-    BooksAPI.update(book, shelfMap[shelf]).then((res) => {
-      this.getAllBooks();
-    })
-  }
-  handleSelectChange = (e,book) =>{
-    this.handleUpdateBook(book,e.target.value);
-  }
-
   getAllBooks () {
     BooksAPI.getAll().then((books) => {
       this.Mybooks = books
